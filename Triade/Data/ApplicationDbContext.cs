@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Triade.Models;
 
 namespace Triade.Data
 {
@@ -9,5 +10,8 @@ namespace Triade.Data
             : base(options)
         {
         }
+
+        public DbSet<Produtos> Produtos { get; set; }
+        public DbSet<Retirados> Retirados { get; set; }
     }
 }
