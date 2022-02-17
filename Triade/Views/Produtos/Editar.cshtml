@@ -1,0 +1,111 @@
+﻿@model Triade.Models.Produtos
+@{
+    ViewData["Title"] = "Adicionar Cliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" asp-action="Editar">
+    <div class="row px-2 mx-2 backgroundWhite border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="col-12" style="padding:20px;">
+            <h2> Adicionar Produto</h2>
+            <br />
+            <br />
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="NomeProduto"></label>
+                </div>
+                <div class="col-4">
+                    <input asp-for="NomeProduto" class="form-control" maxlength="150" />
+                    <span asp-validation-for="NomeProduto" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="PrecoCusto"></label>
+                </div>
+                <div class="col-4">
+                    <input asp-for="PrecoCusto" class="form-control" placeholder="R$: 0,00" />
+                    <span asp-validation-for="PrecoCusto" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="PrecoVenda"></label>
+                </div>
+                <div class="col-4">
+                    <input asp-for="PrecoVenda" class="form-control" placeholder="R$: 0,00"  />
+                    <span asp-validation-for="PrecoVenda" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Qtdproduto"></label>
+                </div>
+                <div class="col-4">
+                    <input type="number" asp-for="Qtdproduto" class="form-control" />
+                    <span asp-validation-for="Qtdproduto" class="text-danger"></span>
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="form-group row">
+                <div class="col-6">
+                    <a href="@Url.Action("Index","Produtos")"  class="btn bg-white" style="float:right; border:1px solid black; width: 100%"><i class="fas fa-history"></i> &nbsp; Voltar</a>
+                </div>
+                <div class="col-6">
+                    <button type="submit"  id="submit" class="btn btn-primary" style="width: 100%;"><i class="fas fa-plus"></i> &nbsp; Atualizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
+    <script>
+        $('form').submit(function (e) {
+        $('#submit').prop("disabled", true);
+        e.preventDefault();
+        var id = $("#Id").val();
+        var nome = $("#NomeProduto").val();
+        var custo = $("#PrecoCusto").val();
+        var venda = $("#PrecoVenda").val();
+        var qtdprod = $("#Qtdproduto").val();
+
+            $.ajax({
+                    url: '@Url.Action("Editar", "Produtos")',
+                    type: 'Post',
+                    dataType: 'json',
+                    data: { Id: id, NomeProduto: nome, PrecoCusto: custo, PrecoVenda: venda, Qtdproduto: qtdprod},
+                    success: function (data) {
+                        if (data != null && data.success) {
+                            swal("Atualizar!", data.message, "success");
+                            
+                            //.then(function(isConfirm) {
+                            //    if (isConfirm) {
+                                
+                            //    } 
+                            //});
+
+                            $('#submit').prop("disabled", false);
+                            //location.reload();
+                        }
+                        else {
+                            swal("Falha ao Atualizar!", data.message, "error");
+                            console.log(model);
+                        }
+                    },
+                    error: function (data) {
+                        swal("Falha ao Atualizar!", data.message, "error");
+                        console.log(model);
+                    }
+                });
+            });
+    </script>
+}

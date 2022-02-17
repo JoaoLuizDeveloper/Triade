@@ -1,0 +1,42 @@
+﻿@using Triade.Models
+@model List<Produtos>
+@{
+    ViewData["Title"] = "Produtos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<div class="border backgroundWhite col-16" style="padding:20px;">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-primary">Produtos</h2>
+        </div>        
+
+        <div class="col-6">
+            <a asp-action="Create" class="btn btn-primary" style="float:right; margin:10px"><i class="fas fa-plus"></i> &nbsp; Novo Produto</a>
+            @*<a asp-action="Index" asp-controller="Relatorios" style="float:right;" class="btn btn-secondary"> &nbsp; Relatórios</a>*@
+        </div>
+    </div>
+    
+    <br />
+    <br />
+
+    <table id="tblData" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>QTD</th>
+                <th>Nome Produto</th>
+                <th>Preço Custo</th>
+                <th>Preço Venda</th>
+                <th>Sub Total</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+@section scripts{
+    <script src="~/js/produtos.js"></script>
+}

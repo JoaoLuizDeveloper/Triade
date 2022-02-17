@@ -1,16 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Triade.Models;
 
 namespace Triade.Controllers
 {
+    [Authorize]
     public class RelatoriosController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public RelatoriosController(ILogger<HomeController> logger)
+        public RelatoriosController()
         {
-            _logger = logger;
         }
 
         public IActionResult Index()
