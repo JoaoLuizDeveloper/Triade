@@ -85,16 +85,18 @@
                     data: { Id: id, NomeProduto: nome, PrecoCusto: custo, PrecoVenda: venda, Qtdproduto: qtdprod},
                     success: function (data) {
                         if (data != null && data.success) {
-                            swal("Atualizar!", data.message, "success");
-                            
-                            //.then(function(isConfirm) {
-                            //    if (isConfirm) {
-                                
-                            //    } 
-                            //});
-
-                            $('#submit').prop("disabled", false);
-                            //location.reload();
+                            swal({
+                                title: "Atualizar!",
+                                text: data.message,
+                                icon: "success",
+                                confirmButtonClass: "btn-primary",
+                                closeOnConfirm:false
+                            },
+                             function(isConfirm){
+                                if (isConfirm) {
+                                    location.reload();
+                                }
+                             });
                         }
                         else {
                             swal("Falha ao Atualizar!", data.message, "error");

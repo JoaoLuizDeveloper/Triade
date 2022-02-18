@@ -1,0 +1,59 @@
+﻿@using Triade.Models
+@model List<Produtos>
+@{
+    ViewData["Title"] = "Produtos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .swal-wide{
+    width:850px !important;
+}
+</style>
+<br />
+<div class="border backgroundWhite col-16" style="padding:20px;">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="text-primary">Produtos</h2>
+        </div>        
+
+        <div class="col-6">
+            <a asp-action="Create" class="btn btn-primary" style="float:right; margin:10px"><i class="fas fa-plus"></i> &nbsp; Novo Produto</a>
+            @*<a asp-action="Index" asp-controller="Relatorios" style="float:right;" class="btn btn-secondary"> &nbsp; Relatórios</a>*@
+        </div>
+    </div>
+    
+    <br />
+    <br />
+    <table border="0" cellspacing="5" cellpadding="5">
+        <tbody>
+            <tr>
+                <td>Data minima:</td>
+                <td><input type="text" id="min" name="min" class="form-control"></td>
+                &nbsp;
+                &nbsp;
+                <td>Data maxima:</td>
+                <td><input type="text" id="max" name="max" class="form-control"></td>
+            </tr>
+        </tbody>
+    </table>
+      <br />
+    <table id="tblData" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>QTD Retirada</th>
+                <th>Nome Produto</th>
+                <th>Preço Venda</th>
+                <th>Data Retirada</th>
+                <th>Sub Total</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+@section scripts{
+    <script src="~/js/saidasEstoque.js"></script>
+
+}

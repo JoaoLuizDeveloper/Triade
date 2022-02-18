@@ -12,6 +12,7 @@ namespace Triade.Data
         }
 
         public DbSet<Produtos> Produtos { get; set; }
+        public DbSet<Requisitados> Requisitados { get; set; }
         public DbSet<Retirados> Retirados { get; set; }
     }
 }

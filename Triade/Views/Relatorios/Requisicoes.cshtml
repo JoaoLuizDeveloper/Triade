@@ -41,11 +41,10 @@
     <table id="tblData" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>QTD</th>
+                <th>QTD Requisitada</th>
                 <th>Nome Produto</th>
-                <th>Preço Custo</th>
                 <th>Preço Venda</th>
-                <th>Data</th>
+                <th>Data Requisitada</th>
                 <th>Sub Total</th>                
                 <th>Ações</th>
             </tr>
@@ -55,7 +54,7 @@
     </table>
 </div>
 
-<div id="modalRequisitada" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="modalRetirada" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -68,7 +67,7 @@
             <div class="modal-body">                
                 <div class="center-margin">
                     <div class="row"> 
-                        <form method="post" asp-action="RequisitarProduto" id="requisitarProduto">
+                        <form method="post" asp-action="RetirarProduto">
                             <div class="row px-2 mx-2 backgroundWhite border">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -127,83 +126,11 @@
     </div>
 </div>
 
-<div id="modaladdQtdProduto" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" style="text-align:center;" id="title_Produto"> </h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">                
-                <div class="center-margin">
-                    <div class="row"> 
-                        <form method="post" asp-action="AdicionarQtdProduto" id="addProduto">
-                            <div class="row px-2 mx-2 backgroundWhite border">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                                <div class="col-12" style="padding:20px;">
-                                    <br />
-                                    <br />
-                                    <div class="form-group row">
-                                        <div class="col-4">
-                                            <label for="PrecoCusto">Preço Custo </label>
-                                        </div>
-                                        <div class="col-8">
-                                            <input readonly="readonly" id="PrecoCusto" class="form-control" value="" />
-                                        </div>
-                                    </div>
-                                    <br />
-                                    <div class="form-group row">
-                                        <div class="col-4">
-                                            <label for="PrecoVenda">Preço Venda </label>
-                                        </div>
-                                        <div class="col-8">
-                                            <input readonly="readonly" id="PrecoVenda" class="form-control" value="" />
-                                        </div>
-                                    </div>
-                                    <br />
-                                    <div class="form-group row">
-                                        <div class="col-4">
-                                            <label for="Qtdproduto">Qtd Produto </label>
-                                        </div>
-                                        <div class="col-8">
-                                            <input readonly="readonly" id="Qtdproduto" class="form-control" value="" />
-                                        </div>
-                                    </div>
-                                    <br />
-                                    <div class="form-group row">
-                                        <div class="col-4">
-                                            <label for="QtdRequisitadaOuRetirada">Qtd Adicionar </label>
-                                        </div>
-                                        <div class="col-8">
-                                            <input type="number" id="QtdRequisitadaOuRetiradaAdicionar" class="form-control" value="" />
-                                        </div>
-                                    </div>
-                                    <br />
-                                    <br />
-                                </div>
-                            </div>
-                            <br />
-                            <div class="centralize">                                
-                                <button type="submit" id="submit" class="btn btn-primary" style="float:right">Retirar</button>
-                                <button class="btn bg-white" style="float:right"  data-dismiss="modal" aria-label="Close" >Voltar</button>
-                            </div>
-                        </form>    
-                    </div>
-                </div>                
-            </div>
-        </div>
-    </div>
-</div>
-
 @section scripts{
-    <script src="~/js/produtos.js"></script>
+    <script src="~/js/requisicoes.js"></script>
 
     <script>
-        $('form #requisitarProduto').submit(function (e) {
+        $('form').submit(function (e) {
         $('#submit').prop("disabled", true);
         e.preventDefault();
         var id = model.id;
@@ -211,18 +138,18 @@
         var custo = model.precoCusto;
         var venda = model.precoVenda;
         var qtdprod = model.qtdproduto;
-        var qtdreti = $("#QtdRequisitadaOuRetirada").val();
+        var qtdreti = $("#QtdRetirar").val();
 
         $.ajax({
-            url: '@Url.Action("RequisitarProduto", "Produtos")',
+            url: '@Url.Action("RetirarProduto", "Relatorios")',
             type: 'Post',
             dataType: 'json',
             data: { Id: id, NomeProduto: nome, PrecoCusto: custo, PrecoVenda: venda, Qtdproduto: qtdprod, QtdRequisitadaOuRetirada: qtdreti },
             success: function (data) {
                 if (data != null && data.success) {
                     swal({
-                        title: "Quantidade Requisitada do Estoque!",
-                        text: qtdreti + " unidades requisitadas do produto " + nome,
+                        title: "Quantidade Retirada do Estoque!",
+                        text: qtdreti + " unidades retiradas do produto " + nome,
                         icon: "success",
                         confirmButtonClass: "btn-primary",
                         closeOnConfirm:false
@@ -240,48 +167,6 @@
             },
             error: function (data) {
                 swal("Falha ao atualizar!", data.message, "error");
-                console.log(model);
-            }
-        });
-    });
-    
-    $('form #addProduto').submit(function (e) {
-        $('#submit').prop("disabled", true);
-        e.preventDefault();
-        var id = model.id;
-        var nome = model.nomeProduto;
-        var custo = model.precoCusto;
-        var venda = model.precoVenda;
-        var qtdprod = model.qtdproduto;
-        var qtdreti = $("#QtdRequisitadaOuRetiradaAdicionar").val();
-
-        $.ajax({
-            url: '@Url.Action("AdicionarQtdProduto", "Produtos")',
-            type: 'Post',
-            dataType: 'json',
-            data: { Id: id, NomeProduto: nome, PrecoCusto: custo, PrecoVenda: venda, Qtdproduto: qtdprod, QtdRequisitadaOuRetirada: qtdreti },
-            success: function (data) {
-                if (data != null && data.success) {
-                    swal({
-                        title: "Quantidade adicionadas ao Estoque!",
-                        text: qtdreti + " unidades adicionadas ao produto " + nome,
-                        icon: "success",
-                        confirmButtonClass: "btn-primary",
-                        closeOnConfirm:false
-                    },
-                     function(isConfirm){
-                        if (isConfirm) {
-                            location.reload();
-                        }
-                     });                    
-                }
-                else {
-                    swal("Falha ao adicionar unidades!", data.message, "error");
-                    console.log(model);
-                }
-            },
-            error: function (data) {
-                swal("Falha ao adicionar unidades!", data.message, "error");
                 console.log(model);
             }
         });
