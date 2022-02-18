@@ -1,52 +1,6 @@
 ﻿var dataTable;
 
-var minDate, maxDate;
-
-$.fn.dataTable.ext.search.push(
-    function (settings, data, dataIndex) {
-        var ListData = data[4].split('/');
-        var formatingData = ListData[2] + '/' + ListData[1] + '/' + ListData[0];
-
-        var min = minDate.val();
-        var max = maxDate.val();
-        var date = new Date(formatingData);
-
-        if (
-            (min === null && max === null) ||
-            (min === null && date <= max) ||
-            (min <= date && max === null) ||
-            (min <= date && date <= max)
-        ) {
-            return true;
-        }
-        return false;
-    }
-);
-
-function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2)
-        month = '0' + month;
-    if (day.length < 2)
-        day = '0' + day;
-
-    return [year, month, day].join('-');
-}
-
 $(document).ready(function (){
-    // Create date inputs
-    minDate = new DateTime($('#min'), {
-        format: 'Do MMMM  YYYY'
-    });
-
-    maxDate = new DateTime($('#max'), {
-        format: 'Do MMMM YYYY'
-    });
-
     dataTable = $('#tblData').DataTable({
         responsive: true,
         destroy: true,
@@ -74,12 +28,6 @@ $(document).ready(function (){
                 }, "width": "8%"
             },
             {
-                "data": "created",
-                "render": function (data, type, full, meta) {
-                    return `${moment.utc(data).format("DD/MM/YYYY")}`
-                }, "width": "8%"
-            },
-            {
                 "data": "subTotal",
                 "render": function (data, type, full, meta) {
 
@@ -94,26 +42,26 @@ $(document).ready(function (){
                 "data": "id",
                 "render": function (data) {
                     //Use `` for multiple lines
-                    return `<div class="text-center" >
-                                <button onclick=AbrirModalAdicionarQtdProduto(${data}) class='btn btn-primary text-white' style="cursor:pointer; width: 90px">
-                                    <i class="far fa-plus"></i> Add Qtd
+                    return `<div class="text-center">
+                                <button onclick=AbrirModalAdicionarQtdProduto(${data}) class='btn btn-primary text-white' style="cursor:pointer; width: 162px">
+                                    <i class="far fa-plus-square"></i> Add Quantidade
                                 </button>
                                 &nbsp;
 
-                                <button onclick=AbrirModalRequisitada(${data}) class='btn btn-info text-white' style="cursor:pointer; width: 90px">
-                                    <i class="far fa-edit"></i> Requisitar
+                                <button onclick=AbrirModalRequisitada(${data}) class='btn btn-info text-white' style="cursor:pointer; width: 120px">
+                                    <i class="far fa-clone"></i> Requisitar
                                 </button>
                                 &nbsp;
                                 <a href="/Produtos/Editar/${data}" class='btn btn-warning text-white' style="cursor:pointer; width: 90px">
                                     <i class="far fa-edit"></i> Editar
                                 </a>
                                 &nbsp;
-                                <a onclick=Delete("/Produtos/Delete/${data}") class='btn btn-danger text-white' style="cursor:pointer; width: 90px">
+                                <a onclick=Delete("/Produtos/Delete/${data}") class='btn btn-danger text-white' style="cursor:pointer; width: 100px">
                                     <i class="far fa-trash-alt"></i> Deletar
                                 </a>
                             </div>
                             `
-                }, "width": "40%"
+                }, "width": "48%"
             }
         ],
         "language": {
@@ -134,10 +82,6 @@ $(document).ready(function (){
     });
 
     var model = [];
-
-    $("#min, #max").on('change', function () {
-        dataTable.draw();
-    });
 });
 
 function Delete(url) {
@@ -173,13 +117,13 @@ function AbrirModalRequisitada (id) {
         success: function (data) {
             if (data != null) {
                 model = data.model;
-                $('#title_Produto').html("Requisitar Produto " + data.model.nomeProduto);
-                $('#PrecoCusto').val(data.model.precoCusto);
-                $('#PrecoVenda').val(data.model.precoVenda);
-                $('#Qtdproduto').val(data.model.qtdproduto);
-                $('#QtdRetirar').val(data.model.qtdRetirada);
+                $('#title_Produto_Req').html("Requisitar Produto " + data.model.nomeProduto);
+                $('#PrecoCusto_Req').val(data.model.precoCusto);
+                $('#PrecoVenda_Req').val(data.model.precoVenda);
+                $('#Qtdproduto_Req').val(data.model.qtdproduto);
+                $('#QtdRetirar_Req').val(data.model.qtdRequisitadaOuRetirada);
 
-                $('#modalRequisitar').modal('show');                
+                $("#modalRequisitar").modal("show");                
             }
             else {
                 swal("Falha ao requisitar!", "Falha ao requisitar produto" + data.nomeProduto, "error");
@@ -200,21 +144,21 @@ function AbrirModalAdicionarQtdProduto(id) {
         success: function (data) {
             if (data != null) {
                 model = data.model;
-                $('#title_Produto').html("Adicionar Qtd ao Produto " + data.model.nomeProduto);
-                $('#PrecoCusto').val(data.model.precoCusto);
-                $('#PrecoVenda').val(data.model.precoVenda);
-                $('#Qtdproduto').val(data.model.qtdproduto);
-                $('#QtdRetirar').val(data.model.qtdRetirada);
+                $('#title_Produto_addQtd').html("Adicionar Qtd ao Produto " + data.model.nomeProduto);
+                $('#PrecoCusto_addQtd').val(data.model.precoCusto);
+                $('#PrecoVenda_addQtd').val(data.model.precoVenda);
+                $('#Qtdproduto_addQtd').val(data.model.qtdproduto);
+                $('#QtdRequisitadaOuRetirada_addQtd').val(data.model.qtdRequisitadaOuRetirada);
 
-                $('#modaladdQtdProduto').modal('show');                
+                $("#modaladdQtdProduto").modal("show");                
             }
             else {
-                swal("Falha ao requisitar!", "Falha ao Adicionar qtd ao produto" + data.nomeProduto, "error");
+                swal("Falha ao adicionar!", "Falha ao Adicionar qtd ao produto" + data.nomeProduto, "error");
                 console.log(model);
             }
         },
         error: function (data) {
-            swal("Falha ao requisitar!", "Falha ao Adicionar qtd ao produto" + data.nomeProduto, "error");
+            swal("Falha ao adicionar!", "Falha ao Adicionar qtd ao produto" + data.nomeProduto, "error");
             console.log(model);
         }
     });

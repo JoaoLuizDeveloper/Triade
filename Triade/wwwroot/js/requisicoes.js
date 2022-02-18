@@ -47,14 +47,14 @@ $(document).ready(function (){
         format: 'Do MMMM YYYY'
     });
 
-    dataTable = $('#tblData').DataTable({
+    dataTable = $('#tblDataRequisitados').DataTable({
         responsive: true,
         destroy: true,
         bProcessing: true,
         pageLength: 10,
         lengthMenu: [10, 30, 50, 100],
         "ajax": {
-            "url": "/Produtos/GetAllRequisicoes",
+            "url": "/Relatorios/GetAllRequisicoes",
             "type": "Get",
             "datatype": "json",
         },
@@ -89,7 +89,7 @@ $(document).ready(function (){
                 "render": function (data) {
                     //Use `` for multiple lines
                     return `<div class="text-center" >
-                                <button onclick=AbrirModalRetirada(${data}) class='btn btn-info text-white' style="cursor:pointer; width: 90px">
+                                <button onclick=AbrirModalRetirada(${data}) class='btn btn-info text-white' style="cursor:pointer; width: 120px">
                                     <i class="far fa-edit"></i> Retirar
                                 </button>
                             </div>

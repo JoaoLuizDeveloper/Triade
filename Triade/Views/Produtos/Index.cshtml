@@ -25,19 +25,7 @@
     
     <br />
     <br />
-    <table border="0" cellspacing="5" cellpadding="5">
-        <tbody>
-            <tr>
-                <td>Data minima:</td>
-                <td><input type="text" id="min" name="min" class="form-control"></td>
-                &nbsp;
-                &nbsp;
-                <td>Data maxima:</td>
-                <td><input type="text" id="max" name="max" class="form-control"></td>
-            </tr>
-        </tbody>
-    </table>
-      <br />
+
     <table id="tblData" class="table table-striped table-bordered" style="width:100%">
         <thead>
             <tr>
@@ -45,7 +33,6 @@
                 <th>Nome Produto</th>
                 <th>Preço Custo</th>
                 <th>Preço Venda</th>
-                <th>Data</th>
                 <th>Sub Total</th>                
                 <th>Ações</th>
             </tr>
@@ -55,11 +42,11 @@
     </table>
 </div>
 
-<div id="modalRequisitada" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+<div id="modalRequisitar" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" style="text-align:center;" id="title_Produto"> </h4>
+                <h4 class="modal-title" style="text-align:center;" id="title_Produto_Req"> </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -77,37 +64,37 @@
                                     <br />
                                     <div class="form-group row">
                                         <div class="col-4">
-                                            <label for="PrecoCusto">Preço Custo </label>
+                                            <label for="PrecoCusto_Req">Preço Custo </label>
                                         </div>
                                         <div class="col-8">
-                                            <input readonly="readonly" id="PrecoCusto" class="form-control" value="" />
+                                            <input readonly="readonly" id="PrecoCusto_Req" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
                                     <div class="form-group row">
                                         <div class="col-4">
-                                            <label for="PrecoVenda">Preço Venda </label>
+                                            <label for="PrecoVenda_Req">Preço Venda </label>
                                         </div>
                                         <div class="col-8">
-                                            <input readonly="readonly" id="PrecoVenda" class="form-control" value="" />
+                                            <input readonly="readonly" id="PrecoVenda_Req" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
                                     <div class="form-group row">
                                         <div class="col-4">
-                                            <label for="Qtdproduto">Qtd Produto </label>
+                                            <label for="Qtdproduto_Req">Qtd Produto </label>
                                         </div>
                                         <div class="col-8">
-                                            <input readonly="readonly" id="Qtdproduto" class="form-control" value="" />
+                                            <input readonly="readonly" id="Qtdproduto_Req" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
                                     <div class="form-group row">
                                         <div class="col-4">
-                                            <label for="QtdRetirar">Qtd Retirar </label>
+                                            <label for="QtdRetirar_Req">Qtd Requisitar </label>
                                         </div>
                                         <div class="col-8">
-                                            <input type="number" id="QtdRetirar" class="form-control" value="" />
+                                            <input type="number" id="QtdRetirar_Req" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
@@ -115,8 +102,8 @@
                                 </div>
                             </div>
                             <br />
-                            <div class="centralize">                                
-                                <button type="submit" id="submit" class="btn btn-primary" style="float:right">Retirar</button>
+                            <div>                                
+                                <button type="submit" id="submit_Req" class="btn btn-primary" style="float:right">Requisitar</button>
                                 <button class="btn bg-white" style="float:right"  data-dismiss="modal" aria-label="Close" >Voltar</button>
                             </div>
                         </form>    
@@ -131,7 +118,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" style="text-align:center;" id="title_Produto"> </h4>
+                <h4 class="modal-title" style="text-align:center;" id="title_Produto_addQtd"> </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -149,37 +136,37 @@
                                     <br />
                                     <div class="form-group row">
                                         <div class="col-4">
-                                            <label for="PrecoCusto">Preço Custo </label>
+                                            <label for="PrecoCusto_addQtd">Preço Custo </label>
                                         </div>
                                         <div class="col-8">
-                                            <input readonly="readonly" id="PrecoCusto" class="form-control" value="" />
+                                            <input readonly="readonly" id="PrecoCusto_addQtd" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
                                     <div class="form-group row">
                                         <div class="col-4">
-                                            <label for="PrecoVenda">Preço Venda </label>
+                                            <label for="PrecoVenda_addQtd">Preço Venda </label>
                                         </div>
                                         <div class="col-8">
-                                            <input readonly="readonly" id="PrecoVenda" class="form-control" value="" />
+                                            <input readonly="readonly" id="PrecoVenda_addQtd" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
                                     <div class="form-group row">
                                         <div class="col-4">
-                                            <label for="Qtdproduto">Qtd Produto </label>
+                                            <label for="Qtdproduto_addQtd">Qtd Produto </label>
                                         </div>
                                         <div class="col-8">
-                                            <input readonly="readonly" id="Qtdproduto" class="form-control" value="" />
+                                            <input readonly="readonly" id="Qtdproduto_addQtd" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
                                     <div class="form-group row">
                                         <div class="col-4">
-                                            <label for="QtdRequisitadaOuRetirada">Qtd Adicionar </label>
+                                            <label for="QtdRequisitadaOuRetirada_addQtd">Qtd Adicionar </label>
                                         </div>
                                         <div class="col-8">
-                                            <input type="number" id="QtdRequisitadaOuRetiradaAdicionar" class="form-control" value="" />
+                                            <input type="number" id="QtdRequisitadaOuRetirada_addQtd" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
@@ -187,8 +174,8 @@
                                 </div>
                             </div>
                             <br />
-                            <div class="centralize">                                
-                                <button type="submit" id="submit" class="btn btn-primary" style="float:right">Retirar</button>
+                            <div>                                
+                                <button type="submit" id="submit_addQtd" class="btn btn-primary" style="float:right">Adicionar Qtd</button>
                                 <button class="btn bg-white" style="float:right"  data-dismiss="modal" aria-label="Close" >Voltar</button>
                             </div>
                         </form>    
@@ -203,15 +190,16 @@
     <script src="~/js/produtos.js"></script>
 
     <script>
-        $('form #requisitarProduto').submit(function (e) {
-        $('#submit').prop("disabled", true);
+
+    $('#requisitarProduto').submit(function (e) {
+        $('#submit_Req').prop("disabled", true);
         e.preventDefault();
         var id = model.id;
         var nome = model.nomeProduto;
         var custo = model.precoCusto;
         var venda = model.precoVenda;
         var qtdprod = model.qtdproduto;
-        var qtdreti = $("#QtdRequisitadaOuRetirada").val();
+        var qtdreti = $("#QtdRetirar_Req").val();
 
         $.ajax({
             url: '@Url.Action("RequisitarProduto", "Produtos")',
@@ -245,15 +233,15 @@
         });
     });
     
-    $('form #addProduto').submit(function (e) {
-        $('#submit').prop("disabled", true);
+    $('#addProduto').submit(function (e) {
+        $('#submit_addQtd').prop("disabled", true);
         e.preventDefault();
         var id = model.id;
         var nome = model.nomeProduto;
         var custo = model.precoCusto;
         var venda = model.precoVenda;
         var qtdprod = model.qtdproduto;
-        var qtdreti = $("#QtdRequisitadaOuRetiradaAdicionar").val();
+        var qtdreti = $("#QtdRequisitadaOuRetirada_addQtd").val();
 
         $.ajax({
             url: '@Url.Action("AdicionarQtdProduto", "Produtos")',

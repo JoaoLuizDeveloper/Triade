@@ -47,14 +47,14 @@ $(document).ready(function (){
         format: 'Do MMMM YYYY'
     });
 
-    dataTable = $('#tblData').DataTable({
+    dataTable = $('#tblDataSaidas').DataTable({
         responsive: true,
         destroy: true,
         bProcessing: true,
         pageLength: 10,
         lengthMenu: [10, 30, 50, 100],
         "ajax": {
-            "url": "/Produtos/GetAllSaidasEstoque",
+            "url": "/Relatorios/GetAllSaidasEstoque",
             "type": "Get",
             "datatype": "json",
         },

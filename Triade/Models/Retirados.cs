@@ -16,7 +16,7 @@ namespace Triade.Models
         [Display(Name = "Informe a Data de Retirada")]
         public DateTime DataRetirada { get; set; }
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         public int ProdutoId { get; set; }

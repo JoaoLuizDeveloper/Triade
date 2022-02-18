@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Triade.Models;
@@ -15,11 +16,14 @@ namespace Triade.Controllers
         private readonly IProdutosRepository _produtosRepository;
         private readonly IRequisitadosRepository _requisitadosRepository;
         private readonly IMapper _mapper;
-        public ProdutosController(IProdutosRepository produtosRepository, IRequisitadosRepository requisitadosRepository, IMapper mapper)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public ProdutosController(IProdutosRepository produtosRepository, IRequisitadosRepository requisitadosRepository, IMapper mapper, UserManager<IdentityUser> userManager)
         {
             _produtosRepository = produtosRepository;
             _requisitadosRepository = requisitadosRepository;
             _mapper = mapper;
+            _userManager = userManager;
         }
         #endregion
 
@@ -42,7 +46,6 @@ namespace Triade.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Produtos produto)
         {
             produto.Created = DateTime.Now;
@@ -75,13 +78,11 @@ namespace Triade.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(Produtos produto)
         {
-            produto.Created = DateTime.Now;
-
             if (ModelState.IsValid)
             {
+                produto.Updated = DateTime.Now;
                 var adding = await _produtosRepository.Update(produto);
 
                 if (adding == true)
@@ -123,7 +124,6 @@ namespace Triade.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> RequisitarProduto(ProdutosVM produtovm)
         {
             if (ModelState.IsValid)
@@ -137,11 +137,13 @@ namespace Triade.Controllers
 
                 if (updatingQtd == true)
                 {
+                    var user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(true);
+                    
                     var retirado = new Requisitados()
                     {
                         ProdutoId = produto.Id,
                         QtdRequisitada = produtovm.QtdRequisitadaOuRetirada,
-                        UserId = 0,
+                        UserId = user.Id,
                         DataRequisitada = DateTime.Now,
                         Created = DateTime.Now,
                     };
@@ -172,7 +174,6 @@ namespace Triade.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AdicionarQtdProduto(ProdutosVM produtovm)
         {
             if (ModelState.IsValid)

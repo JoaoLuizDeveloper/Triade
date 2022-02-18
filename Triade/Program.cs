@@ -18,6 +18,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddInfrastructure();
 builder.Services.AddAutoMapper(typeof(TriadeMappings));
+//builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

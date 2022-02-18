@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Triade.Models;
@@ -16,12 +17,15 @@ namespace Triade.Controllers
         private readonly IRetiradosRepository _retiradosRepository;
         private readonly IRequisitadosRepository _requisitadosRepository;
         private readonly IMapper _mapper;
-        public RelatoriosController(IProdutosRepository produtosRepository, IRetiradosRepository retiradosRepository, IRequisitadosRepository requisitadosRepository, IMapper mapper)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public RelatoriosController(IProdutosRepository produtosRepository, IRetiradosRepository retiradosRepository, IRequisitadosRepository requisitadosRepository, IMapper mapper, UserManager<IdentityUser> userManager)
         {
             _produtosRepository = produtosRepository;
             _retiradosRepository = retiradosRepository;
             _requisitadosRepository = requisitadosRepository;
             _mapper = mapper;
+            _userManager = userManager;
         }
         #endregion
                 
@@ -31,9 +35,10 @@ namespace Triade.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllSaidasEstoque()
+        public async Task<IActionResult> GetAllSaidasEstoque()
         {
-            return Json(new { data = _retiradosRepository.GetAll().Result.ToList() });
+            var model = await _retiradosRepository.GetAll().ConfigureAwait(true);
+            return Json(new { data = model });
         }
 
         public IActionResult Requisicoes()
@@ -42,9 +47,10 @@ namespace Triade.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllRequisicoes()
+        public async Task<IActionResult> GetAllRequisicoes()
         {
-            return Json(new { data = _requisitadosRepository.GetAll().Result.ToList() });
+            var model = await _requisitadosRepository.GetAll().ConfigureAwait(true);
+            return Json(new { data = model });
         }
 
 
@@ -74,11 +80,12 @@ namespace Triade.Controllers
 
                 if (updatingQtd == true)
                 {
+                    var user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(true);
                     var retirado = new Retirados()
                     {
                         ProdutoId = produto.Id,
                         QtdRetirada = produtovm.QtdRequisitadaOuRetirada,
-                        UserId = 0,
+                        UserId = user.Id,
                         DataRetirada = DateTime.Now,
                         Created = DateTime.Now,
                     };
