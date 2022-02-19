@@ -19,7 +19,11 @@ namespace Triade.Models
         [Display(Name = "Informe preço de venda do produto")]
         public double PrecoVenda { get; set; }
 
-        public bool IsSimple { get; set; }
+        public enum ProductType { Simples, Composto }
+
+        [Required(ErrorMessage = "O tipo do produto é obrigatório")]
+        [Display(Name = "Informe o tipo do produto")]
+        public ProductType ProdutoTipo { get; set; }
 
         [Required(ErrorMessage = "A quantidade do produto é obrigatória")]
         [Display(Name = "Informe a quantidade do produto")]

@@ -19,7 +19,13 @@
 
         <div class="col-6">
             <a asp-action="Create" class="btn btn-primary" style="float:right; margin:10px"><i class="fas fa-plus"></i> &nbsp; Novo Produto</a>
-            @*<a asp-action="Index" asp-controller="Relatorios" style="float:right;" class="btn btn-secondary"> &nbsp; Relatórios</a>*@
+        </div>
+        <br />
+        <div class="col-6">
+        </div>
+        
+        <div class="col-6">
+            <a asp-action="Create" class="btn btn-primary" style="float:right; margin:10px"><i class="fas fa-plus"></i> &nbsp; Novo Produto Composto</a>
         </div>
     </div>
     
@@ -62,21 +68,14 @@
                                 <div class="col-12" style="padding:20px;">
                                     <br />
                                     <br />
-                                    <div class="form-group row">
-                                        <div class="col-4">
-                                            <label for="PrecoCusto_Req">Preço Custo </label>
-                                        </div>
-                                        <div class="col-8">
-                                            <input readonly="readonly" id="PrecoCusto_Req" class="form-control" value="" />
-                                        </div>
-                                    </div>
+                                    
                                     <br />
                                     <div class="form-group row">
                                         <div class="col-4">
                                             <label for="PrecoVenda_Req">Preço Venda </label>
                                         </div>
                                         <div class="col-8">
-                                            <input readonly="readonly" id="PrecoVenda_Req" class="form-control" value="" />
+                                            <input disabled="disabled" id="PrecoVenda_Req" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
@@ -85,7 +84,7 @@
                                             <label for="Qtdproduto_Req">Qtd Produto </label>
                                         </div>
                                         <div class="col-8">
-                                            <input readonly="readonly" id="Qtdproduto_Req" class="form-control" value="" />
+                                            <input disabled="disabled" id="Qtdproduto_Req" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
@@ -94,7 +93,16 @@
                                             <label for="QtdRetirar_Req">Qtd Requisitar </label>
                                         </div>
                                         <div class="col-8">
-                                            <input type="number" id="QtdRetirar_Req" class="form-control" value="" />
+                                            <input type="number" min="0" id="QtdRetirar_Req" class="form-control" value="" />
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="form-group row">
+                                        <div class="col-4">
+                                            <label for="subTotal">Sub Total</label>
+                                        </div>
+                                        <div class="col-8">
+                                            <input disabled="disabled" id="SubTotal" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
@@ -139,7 +147,7 @@
                                             <label for="PrecoCusto_addQtd">Preço Custo </label>
                                         </div>
                                         <div class="col-8">
-                                            <input readonly="readonly" id="PrecoCusto_addQtd" class="form-control" value="" />
+                                            <input disabled="disabled" id="PrecoCusto_addQtd" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
@@ -148,7 +156,7 @@
                                             <label for="PrecoVenda_addQtd">Preço Venda </label>
                                         </div>
                                         <div class="col-8">
-                                            <input readonly="readonly" id="PrecoVenda_addQtd" class="form-control" value="" />
+                                            <input disabled="disabled" id="PrecoVenda_addQtd" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
@@ -157,7 +165,7 @@
                                             <label for="Qtdproduto_addQtd">Qtd Produto </label>
                                         </div>
                                         <div class="col-8">
-                                            <input readonly="readonly" id="Qtdproduto_addQtd" class="form-control" value="" />
+                                            <input disabled="disabled" id="Qtdproduto_addQtd" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
@@ -190,14 +198,13 @@
     <script src="~/js/produtos.js"></script>
 
     <script>
-
     $('#requisitarProduto').submit(function (e) {
         $('#submit_Req').prop("disabled", true);
         e.preventDefault();
         var id = model.id;
         var nome = model.nomeProduto;
-        var custo = model.precoCusto;
-        var venda = model.precoVenda;
+        var custo = (model.precoCusto).toString().replace(".", ",");
+        var venda = (model.precoVenda).toString().replace(".", ",");
         var qtdprod = model.qtdproduto;
         var qtdreti = $("#QtdRetirar_Req").val();
 
@@ -219,7 +226,7 @@
                         if (isConfirm) {
                             location.reload();
                         }
-                     });                    
+                    });                    
                 }
                 else {
                     swal("Falha ao atualizar!", data.message, "error");
@@ -238,8 +245,8 @@
         e.preventDefault();
         var id = model.id;
         var nome = model.nomeProduto;
-        var custo = model.precoCusto;
-        var venda = model.precoVenda;
+        var custo = (model.precoCusto).toString().replace(".", ",");
+        var venda = (model.precoVenda).toString().replace(".", ",");
         var qtdprod = model.qtdproduto;
         var qtdreti = $("#QtdRequisitadaOuRetirada_addQtd").val();
 
@@ -273,6 +280,14 @@
                 console.log(model);
             }
         });
+    });
+
+    $("#QtdRetirar_Req").change( function(){
+
+        var precoVen = $("#PrecoVenda_Req").val();
+        var qtd = $("#QtdRetirar_Req").val();
+
+        $("#SubTotal").val((precoVen * qtd).toString().substring(0, 5));
     });
     </script>
 }

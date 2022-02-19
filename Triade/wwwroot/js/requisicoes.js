@@ -4,7 +4,7 @@ var minDate, maxDate;
 
 $.fn.dataTable.ext.search.push(
     function (settings, data, dataIndex) {
-        var ListData = data[4].split('/');
+        var ListData = data[3].split('/');
         var formatingData = ListData[2] + '/' + ListData[1] + '/' + ListData[0];
 
         var min = minDate.val();
@@ -60,13 +60,8 @@ $(document).ready(function (){
         },
         "columns": [
             { "data": "qtdRequisitada", "width": "8%" },
-            { "data": "model.nomeProduto", "width": "20%" },
-            {
-                "data": "model.precoVenda",
-                "render": function (data) {
-                    return `R$ ${data}`
-                }, "width": "8%"
-            },
+            { "data": "produto.nomeProduto", "width": "20%" },
+            { "data": "produto.precoVenda", "width": "8%" },
             {
                 "data": "dataRequisitada",
                 "render": function (data, type, full, meta) {
@@ -79,7 +74,7 @@ $(document).ready(function (){
 
                     return `<div class="text-center" >
                                     <div class='btn text-black renda' style="cursor:pointer; width: 160px; border-radius: 10px; background-color:gray;">
-                                       R$ ${(full.model.precoVenda * full.qtdRequisitada).toString().substring(0, 5)}
+                                       R$ ${(full.produto.precoVenda * full.qtdRequisitada).toString().substring(0, 5)}
                                     </div>
                                 </div>`
                 }, "width": "10%"
@@ -89,8 +84,8 @@ $(document).ready(function (){
                 "render": function (data) {
                     //Use `` for multiple lines
                     return `<div class="text-center" >
-                                <button onclick=AbrirModalRetirada(${data}) class='btn btn-info text-white' style="cursor:pointer; width: 120px">
-                                    <i class="far fa-edit"></i> Retirar
+                                <button onclick=AbrirModalRetirada(${data}) class='btn btn-info text-white' style="cursor:pointer; width: 170px">
+                                    <i class="far fa-edit"></i> Efetuar retirada
                                 </button>
                             </div>
                             `
@@ -123,16 +118,17 @@ $(document).ready(function (){
 
 function AbrirModalRetirada (id) {
     $.ajax({
-        url: '/Relatorios/RetirarProduto/' + id,
+        url: '/Relatorios/RetirarRequisicao/' + id,
         type: 'Get',
         success: function (data) {
             if (data != null) {
                 model = data.model;
-                $('#title_Produto').html("Retirar Produto " + data.model.nomeProduto);
-                $('#PrecoCusto').val(data.model.precoCusto);
-                $('#PrecoVenda').val(data.model.precoVenda);
-                $('#Qtdproduto').val(data.model.qtdproduto);
-                $('#QtdRetirar').val(data.model.qtdRetirada);
+                $('#title_Produto').html("Retirar Produto " + data.model.produto.nomeProduto);
+                
+                $('#PrecoVenda').val(data.model.produto.precoVenda);
+                $('#QtdRetirar').val(data.model.qtdRequisitada);
+                $('#IdProduto').val(data.model.produto.id);
+                $('#IdRequisicao').val(data.model.id);
 
                 $('#modalRetirada').modal('show');                
             }

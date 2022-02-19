@@ -40,9 +40,11 @@ $(document).ready(function (){
             },
             {
                 "data": "id",
-                "render": function (data) {
+                "render": function (data, type, full, meta) {
                     //Use `` for multiple lines
-                    return `<div class="text-center">
+                    if (full.produtoTipo == 2) {
+                        return `
+                            <div class="text-center">
                                 <button onclick=AbrirModalAdicionarQtdProduto(${data}) class='btn btn-primary text-white' style="cursor:pointer; width: 162px">
                                     <i class="far fa-plus-square"></i> Add Quantidade
                                 </button>
@@ -61,6 +63,21 @@ $(document).ready(function (){
                                 </a>
                             </div>
                             `
+                    } else {
+                        return `
+                            <div class="text-center">
+                                
+                                <a href="/Produtos/Editar/${data}" class='btn btn-warning text-white' style="cursor:pointer; width: 90px">
+                                    <i class="far fa-edit"></i> Editar
+                                </a>
+                                &nbsp;
+                                <a onclick=Delete("/Produtos/Delete/${data}") class='btn btn-danger text-white' style="cursor:pointer; width: 100px">
+                                    <i class="far fa-trash-alt"></i> Deletar
+                                </a>
+                            </div>
+                            `
+                    }
+                    
                 }, "width": "48%"
             }
         ],
@@ -118,10 +135,12 @@ function AbrirModalRequisitada (id) {
             if (data != null) {
                 model = data.model;
                 $('#title_Produto_Req').html("Requisitar Produto " + data.model.nomeProduto);
-                $('#PrecoCusto_Req').val(data.model.precoCusto);
+                
                 $('#PrecoVenda_Req').val(data.model.precoVenda);
                 $('#Qtdproduto_Req').val(data.model.qtdproduto);
+                
                 $('#QtdRetirar_Req').val(data.model.qtdRequisitadaOuRetirada);
+                $('#QtdRetirar_Req').attr({ "max": data.model.qtdproduto });
 
                 $("#modalRequisitar").modal("show");                
             }

@@ -37,8 +37,7 @@ namespace Triade.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllSaidasEstoque()
         {
-            var model = await _retiradosRepository.GetAll().ConfigureAwait(true);
-            return Json(new { data = model });
+            return Json(new { data = await _retiradosRepository.GetAll(includeProperties: "Produto").ConfigureAwait(true) });
         }
 
         public IActionResult Requisicoes()
@@ -49,59 +48,44 @@ namespace Triade.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllRequisicoes()
         {
-            var model = await _requisitadosRepository.GetAll().ConfigureAwait(true);
-            return Json(new { data = model });
+            return Json(new { data = await _requisitadosRepository.GetAll(includeProperties: "Produto").ConfigureAwait(true) });
         }
 
 
         #region Retirar Produto
         [HttpGet]
-        public async Task<IActionResult> RetirarProduto(int id)
+        public async Task<IActionResult> RetirarRequisicao(int id)
         {
-            var model = _mapper.Map<ProdutosVM>(await _produtosRepository.Get(id));
-
-            model.QtdRequisitadaOuRetirada = 0;
+            var model = _mapper.Map<Requisitados>(await _requisitadosRepository.GetFirstOrDefault(x=> x.Id == id, includeProperties: "Produto"));
 
             return Json(new { model });
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RetirarProduto(ProdutosVM produtovm)
+        public async Task<IActionResult> RetirarRequisicao(RetiradosRequisicaoVM retiradoRequisicao)
         {
             if (ModelState.IsValid)
             {
-                produtovm.Updated = DateTime.Now;
-                var produto = _mapper.Map<Produtos>(produtovm);
+                var user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(true);
 
-                produto.Qtdproduto -= produtovm.QtdRequisitadaOuRetirada;
-
-                var updatingQtd = await _produtosRepository.Update(produto);
-
-                if (updatingQtd == true)
+                var retirado = new Retirados()
                 {
-                    var user = await _userManager.GetUserAsync(HttpContext.User).ConfigureAwait(true);
-                    var retirado = new Retirados()
-                    {
-                        ProdutoId = produto.Id,
-                        QtdRetirada = produtovm.QtdRequisitadaOuRetirada,
-                        UserId = user.Id,
-                        DataRetirada = DateTime.Now,
-                        Created = DateTime.Now,
-                    };
+                    DataRetirada = DateTime.Now,
+                    Created = DateTime.Now,
+                    UserId = user.Id,
+                    ProdutoId = retiradoRequisicao.ProdutoId,
+                    QtdRetirada = retiradoRequisicao.QtdRetirada
+                };
 
-                    await _retiradosRepository.Update(retirado);
+                await _retiradosRepository.Update(retirado);
 
-                    return Json(new { success = true, message = "Quantidade atualizada com Sucesso" });
-                }
-                else
-                {
-                    return Json(new { success = false, message = "Falha ao atualizar quantidade. Verifique os campos!" });
-                }
+                await _requisitadosRepository.Remove(retiradoRequisicao.RequisicaoId);
+
+                return Json(new { success = true, message = "Requisição finalizada com Sucesso" });
             }
             else
             {
-                return Json(new { success = false, message = "Falha ao atualizar quantidade. Verifique os campos!" });
+                return Json(new { success = false, message = "Falha ao finalizar requisição!" });
             }
         }
         #endregion

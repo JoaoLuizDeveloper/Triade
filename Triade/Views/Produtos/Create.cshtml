@@ -1,4 +1,5 @@
-﻿@model Triade.Models.Produtos
+﻿@using static Triade.Models.Produtos
+@model Triade.Models.Produtos
 @{
     ViewData["Title"] = "Adicionar Produto";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,6 +12,15 @@
         <div class="col-12" style="padding:20px;">
             <h2> Adicionar Produto</h2>
             <br />
+            <br />
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="ProdutoTipo"></label>
+                </div>
+                <div class="col-4">
+                    <select asp-for="ProdutoTipo" asp-items="Html.GetEnumSelectList<ProductType>()" class="form-control"></select>
+                </div>
+            </div>
             <br />
             <div class="form-group row">
                 <div class="col-4">

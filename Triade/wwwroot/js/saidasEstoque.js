@@ -4,7 +4,7 @@ var minDate, maxDate;
 
 $.fn.dataTable.ext.search.push(
     function (settings, data, dataIndex) {
-        var ListData = data[4].split('/');
+        var ListData = data[3].split('/');
         var formatingData = ListData[2] + '/' + ListData[1] + '/' + ListData[0];
 
         var min = minDate.val();
@@ -60,12 +60,9 @@ $(document).ready(function (){
         },
         "columns": [
             { "data": "qtdRetirada", "width": "8%" },
-            { "data": "model.nomeProduto", "width": "20%" },
+            { "data": "produto.nomeProduto", "width": "20%" },
             {
-                "data": "model.precoVenda",
-                "render": function (data) {
-                    return `R$ ${data}`
-                }, "width": "8%"
+                "data": "produto.precoVenda", "width": "8%"
             },
             {
                 "data": "dataRetirada",
@@ -79,7 +76,7 @@ $(document).ready(function (){
 
                     return `<div class="text-center" >
                                     <div class='btn text-black renda' style="cursor:pointer; width: 160px; border-radius: 10px; background-color:gray;">
-                                       R$ ${(full.model.precoVenda * full.qtdRetirada).toString().substring(0, 5)}
+                                       R$ ${(full.produto.precoVenda * full.qtdRetirada).toString().substring(0, 5)}
                                     </div>
                                 </div>`
                 }, "width": "10%"

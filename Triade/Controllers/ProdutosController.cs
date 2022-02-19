@@ -70,6 +70,36 @@ namespace Triade.Controllers
         }
         
         [HttpGet]
+        public IActionResult CreateProdutoComposto()
+        {
+            return View(new Produtos());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateProdutoComposto(Produtos produto)
+        {
+            produto.Created = DateTime.Now;
+
+            if (ModelState.IsValid)
+            {
+                var adding = await _produtosRepository.Add(produto);
+
+                if (adding == true)
+                {
+                    return Json(new { success = true, message = "Adicionado com Sucesso" });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Falha ao adicionar. Verifique os campos!" });
+                }
+            }
+            else
+            {
+                return Json(new { success = false, message = "Falha ao adicionar. Verifique os campos!" });
+            }                       
+        }
+        
+        [HttpGet]
         public async Task<IActionResult> Editar(int id)
         {
             var model = await _produtosRepository.Get(id);

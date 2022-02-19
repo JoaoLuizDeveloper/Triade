@@ -67,41 +67,27 @@
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                                 <div class="col-12" style="padding:20px;">
+                                    <input type="hidden" id="IdProduto" value=""/>
+                                    <input type="hidden" id="IdRequisicao" value=""/>
                                     <br />
                                     <br />
-                                    <div class="form-group row">
-                                        <div class="col-4">
-                                            <label for="PrecoCusto">Preço Custo </label>
-                                        </div>
-                                        <div class="col-8">
-                                            <input readonly="readonly" id="PrecoCusto" class="form-control" value="" />
-                                        </div>
-                                    </div>
                                     <br />
                                     <div class="form-group row">
                                         <div class="col-4">
                                             <label for="PrecoVenda">Preço Venda </label>
                                         </div>
                                         <div class="col-8">
-                                            <input readonly="readonly" id="PrecoVenda" class="form-control" value="" />
+                                            <input disabled="disabled" id="PrecoVenda" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
-                                    <div class="form-group row">
-                                        <div class="col-4">
-                                            <label for="Qtdproduto">Qtd Produto </label>
-                                        </div>
-                                        <div class="col-8">
-                                            <input readonly="readonly" id="Qtdproduto" class="form-control" value="" />
-                                        </div>
-                                    </div>
                                     <br />
                                     <div class="form-group row">
                                         <div class="col-4">
                                             <label for="QtdRetirar">Qtd Retirar </label>
                                         </div>
                                         <div class="col-8">
-                                            <input type="number" id="QtdRetirar" class="form-control" value="" />
+                                            <input disabled="disabled" id="QtdRetirar" class="form-control" value="" />
                                         </div>
                                     </div>
                                     <br />
@@ -128,23 +114,21 @@
         $('form').submit(function (e) {
         $('#submit').prop("disabled", true);
         e.preventDefault();
-        var id = model.id;
-        var nome = model.nomeProduto;
-        var custo = model.precoCusto;
-        var venda = model.precoVenda;
-        var qtdprod = model.qtdproduto;
+
+        var idReq = $("#IdRequisicao").val();
         var qtdreti = $("#QtdRetirar").val();
+        var prodId = $("#IdProduto").val();
 
         $.ajax({
-            url: '@Url.Action("RetirarProduto", "Relatorios")',
+            url: '@Url.Action("RetirarRequisicao", "Relatorios")',
             type: 'Post',
             dataType: 'json',
-            data: { Id: id, NomeProduto: nome, PrecoCusto: custo, PrecoVenda: venda, Qtdproduto: qtdprod, QtdRequisitadaOuRetirada: qtdreti },
+            data: { RequisicaoId: idReq , QtdRetirada: qtdreti, ProdutoId: prodId },
             success: function (data) {
                 if (data != null && data.success) {
                     swal({
                         title: "Quantidade Retirada do Estoque!",
-                        text: qtdreti + " unidades retiradas do produto " + nome,
+                        text: data.message,
                         icon: "success",
                         confirmButtonClass: "btn-primary",
                         closeOnConfirm:false
@@ -156,12 +140,12 @@
                      });                    
                 }
                 else {
-                    swal("Falha ao atualizar!", data.message, "error");
+                    swal("Falha ao finalizar requisição!", data.message, "error");
                     console.log(model);
                 }
             },
             error: function (data) {
-                swal("Falha ao atualizar!", data.message, "error");
+                swal("Falha ao finalizar requisição!", data.message, "error");
                 console.log(model);
             }
         });
