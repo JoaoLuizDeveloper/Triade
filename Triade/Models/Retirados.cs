@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Triade.Models
@@ -23,7 +24,7 @@ namespace Triade.Models
 
         [ForeignKey("ProdutoId")]
         public Produtos Produto { get; set; }
-        
+
         //[Required]
         //public int RequisicaoId { get; set; }
 

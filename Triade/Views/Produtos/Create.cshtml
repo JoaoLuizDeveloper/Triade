@@ -57,7 +57,7 @@
                     <label asp-for="Qtdproduto"></label>
                 </div>
                 <div class="col-4">
-                    <input type="number" asp-for="Qtdproduto" class="form-control" />
+                    <input type="number" readonly='readonly' asp-for="Qtdproduto" class="form-control" value="1" />
                     <span asp-validation-for="Qtdproduto" class="text-danger"></span>
                 </div>
             </div>
@@ -78,6 +78,18 @@
 @section scripts{
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
     <script>
+        $("#ProdutoTipo").change(function(){
+            var campo = $("#ProdutoTipo").val();
+
+            if(campo == "1"){
+                $("#Qtdproduto").attr("readonly", false);
+            }else if(campo == "0"){
+                $("#Qtdproduto").val("1");
+                $("#Qtdproduto").attr("readonly", true);
+            }
+        });
+
+
         $('form').submit(function (e) {
         $('#submit').prop("disabled", true);
         e.preventDefault();

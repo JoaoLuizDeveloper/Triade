@@ -4,7 +4,7 @@ var minDate, maxDate;
 
 $.fn.dataTable.ext.search.push(
     function (settings, data, dataIndex) {
-        var ListData = data[3].split('/');
+        var ListData = data[4].split('/');
         var formatingData = ListData[2] + '/' + ListData[1] + '/' + ListData[0];
 
         var min = minDate.val();
@@ -61,6 +61,7 @@ $(document).ready(function (){
         "columns": [
             { "data": "qtdRetirada", "width": "8%" },
             { "data": "produto.nomeProduto", "width": "20%" },
+            { "data": "usuario.userName", "width": "20%" },
             {
                 "data": "produto.precoVenda", "width": "8%"
             },

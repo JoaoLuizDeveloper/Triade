@@ -34,9 +34,9 @@ namespace Triade.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Json(new { data = _produtosRepository.GetAll().Result.ToList() });
+            return Json(new { data = await _produtosRepository.GetAll(x => x.Qtdproduto > 0).ConfigureAwait(true) });
         }
 
         [HttpGet]

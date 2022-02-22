@@ -5,6 +5,5 @@ namespace Triade.Repository.IRepository
 {
     public interface IRequisitadosRepository : IRepository<Requisitados>
     {
-        //Task<bool> AddDeveloperToProject(int developerId, int projectId);
     }
 }

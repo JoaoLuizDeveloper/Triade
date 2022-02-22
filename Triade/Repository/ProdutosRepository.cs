@@ -13,12 +13,5 @@ namespace LubyTechAPI.Repository
         {
         }
         #endregion
-        
-        //public async Task<bool> CreateAddDeveloperToProject(int developerId, int projectId)
-        //{
-        //    //await _db.Developers_Projects.AddAsync(new Developers_Projects() { DeveloperId = developerId, ProjectId = projectId });
-        //    //return await _db.SaveChangesAsync() >= 0;
-        //    return false;
-        //}
     }
 }

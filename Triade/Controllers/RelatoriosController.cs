@@ -37,7 +37,25 @@ namespace Triade.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllSaidasEstoque()
         {
-            return Json(new { data = await _retiradosRepository.GetAll(includeProperties: "Produto").ConfigureAwait(true) });
+            var model = await _retiradosRepository.GetAll(includeProperties: "Produto").ConfigureAwait(true);
+
+            var retiradosList = new List<RetiradosVM>();
+            foreach(var retirado in model)
+            {
+                var user = await _userManager.FindByIdAsync(retirado.UserId).ConfigureAwait(true);
+
+                var retToAdd = new RetiradosVM()
+                {
+                    Produto = retirado.Produto,
+                    DataRetirada = retirado.DataRetirada,
+                    QtdRetirada = retirado.QtdRetirada,
+                    Usuario = user
+                };
+
+                retiradosList.Add(retToAdd);
+            }            
+
+            return Json(new { data = retiradosList });
         }
 
         public IActionResult Requisicoes()

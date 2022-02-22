@@ -30,12 +30,11 @@ $(document).ready(function (){
             {
                 "data": "subTotal",
                 "render": function (data, type, full, meta) {
-
                     return `<div class="text-center" >
-                                    <div class='btn text-black renda' style="cursor:pointer; width: 160px; border-radius: 10px; background-color:gray;">
-                                       R$ ${(full.precoVenda * full.qtdproduto).toString().substring(0, 5)}
-                                    </div>
-                                </div>`
+                                <div class='btn text-black renda' style="cursor:pointer; width: 160px; border-radius: 10px; background-color:gray;">
+                                    R$ ${(full.precoVenda * full.qtdproduto).toString().substring(0, 5)}
+                                </div>
+                            </div>`
                 }, "width": "10%"
             },
             {
@@ -54,10 +53,12 @@ $(document).ready(function (){
                                     <i class="far fa-clone"></i> Requisitar
                                 </button>
                                 &nbsp;
+
                                 <a href="/Produtos/Editar/${data}" class='btn btn-warning text-white' style="cursor:pointer; width: 90px">
                                     <i class="far fa-edit"></i> Editar
                                 </a>
                                 &nbsp;
+
                                 <a onclick=Delete("/Produtos/Delete/${data}") class='btn btn-danger text-white' style="cursor:pointer; width: 100px">
                                     <i class="far fa-trash-alt"></i> Deletar
                                 </a>
@@ -66,11 +67,16 @@ $(document).ready(function (){
                     } else {
                         return `
                             <div class="text-center">
-                                
+                                <button onclick=AbrirModalRequisitada(${data}) class='btn btn-info text-white' style="cursor:pointer; width: 120px">
+                                    <i class="far fa-clone"></i> Requisitar
+                                </button>
+                                &nbsp;
+
                                 <a href="/Produtos/Editar/${data}" class='btn btn-warning text-white' style="cursor:pointer; width: 90px">
                                     <i class="far fa-edit"></i> Editar
                                 </a>
                                 &nbsp;
+
                                 <a onclick=Delete("/Produtos/Delete/${data}") class='btn btn-danger text-white' style="cursor:pointer; width: 100px">
                                     <i class="far fa-trash-alt"></i> Deletar
                                 </a>
