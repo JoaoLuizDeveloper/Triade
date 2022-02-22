@@ -40,7 +40,7 @@ namespace Triade.Controllers
             var model = await _retiradosRepository.GetAll(includeProperties: "Produto").ConfigureAwait(true);
 
             var retiradosList = new List<RetiradosVM>();
-            foreach(var retirado in model)
+            foreach(var retirado in model.Where(x=> x.Produto.ProdutoTipo == Produtos.ProductType.Simples))
             {
                 var user = await _userManager.FindByIdAsync(retirado.UserId).ConfigureAwait(true);
 
