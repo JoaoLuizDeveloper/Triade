@@ -82,14 +82,19 @@ $(document).ready(function (){
             {
                 "data": "id",
                 "render": function (data) {
-                    //Use `` for multiple lines
-                    return `<div class="text-center" >
+                    return `<div class="text-center" style="display: inline-flex;align-items: center;justify-content: center;" >
+                                <button onclick=VoltarRequisicao(${data}) class='btn btn-info text-white' style="cursor:pointer; width: 170px">
+                                    <i class="fas fa-undo"></i> Voltar Requisicao
+                                </button>
+                            </div>
+
+                            <div class="text-center" style="display: inline-flex;align-items: center;justify-content: center;" >
                                 <button onclick=AbrirModalRetirada(${data}) class='btn btn-info text-white' style="cursor:pointer; width: 170px">
-                                    <i class="far fa-edit"></i> Efetuar retirada
+                                    <i class="far fa-edit"></i> Efetuar Retirada
                                 </button>
                             </div>
                             `
-                }, "width": "40%"
+                }, "width": "46%"
             }
         ],
         "language": {
@@ -139,6 +144,38 @@ function AbrirModalRetirada (id) {
         },
         error: function (data) {
             swal("Falha ao retirar!", "Falha ao retirar produto" + data.nomeProduto, "error");
+            console.log(model);
+        }
+    });
+};
+
+function VoltarRequisicao(id) {
+    $.ajax({
+        url: '/Relatorios/VoltarRequisicao/' + id,
+        type: 'Get',
+        success: function (data) {
+            if (data != null) {
+                swal({
+                    title: "Quantidade voltou para Produtos!",
+                    text: data.message,
+                    icon: "success",
+                    confirmButtonClass: "btn-primary",
+                    closeOnConfirm: false
+                },
+
+                function (isConfirm) {
+                    if (isConfirm) {
+                        location.reload();
+                    }
+                });
+            }
+            else {
+                swal("Falha ao voltar a quantidade!");
+                console.log(model);
+            }
+        },
+        error: function (data) {
+            swal("Falha ao voltar a quantidade!");
             console.log(model);
         }
     });

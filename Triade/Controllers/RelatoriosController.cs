@@ -69,6 +69,20 @@ namespace Triade.Controllers
             return Json(new { data = await _requisitadosRepository.GetAll(includeProperties: "Produto").ConfigureAwait(true) });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> VoltarRequisicao(int id)
+        {
+            var requisicao = await _requisitadosRepository.GetFirstOrDefault(x => x.Id == id);
+
+            var produto = await _produtosRepository.Get(requisicao.ProdutoId);
+
+            produto.Qtdproduto += requisicao.QtdRequisitada;
+
+            await _produtosRepository.Update(produto);
+            await _requisitadosRepository.Remove(id);
+
+            return Json(new { success = true, message = "Requisição finalizada e quantidade voltada para Produtos!" });
+        }
 
         #region Retirar Produto
         [HttpGet]
